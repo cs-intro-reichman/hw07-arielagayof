@@ -47,6 +47,7 @@ public class HashTagTokenizer {
 				System.out.println(sub);
 				String hashtag2 = hashtag.substring(i, N);
 				breakHashTag(hashtag2, dictionary);
+				break;
 			}
         }
     }
