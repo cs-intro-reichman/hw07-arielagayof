@@ -11,25 +11,52 @@ public class SpellChecker {
 	}
 
 	public static String tail(String str) {
-		// Your code goes here
+		String tail = str.substring(1);
+		return tail;
 	}
 
 	public static int levenshtein(String word1, String word2) {
-		// Your code goes here
+		word1 = word1.toLowerCase();
+		word2 = word2.toLowerCase();
+		if (word1.length() == 0) {
+			return word2.length();
+		}
+		if (word2.length() == 0) {
+			return word1.length();
+		}
+		if (word1.charAt(0) == word2.charAt(0)) {
+			return levenshtein(tail(word1), tail(word2));
+		}
+		return 1 + Math.min(levenshtein(tail(word2), tail(word1)), Math.min(levenshtein(word1, tail(word2)), levenshtein(tail(word1), word2)));
+
 	}
 
 	public static String[] readDictionary(String fileName) {
 		String[] dictionary = new String[3000];
-
 		In in = new In(fileName);
 
-		// Your code here
+		for (int i = 0; i < dictionary.length; i++) {
+			dictionary[i] = in.readLine();
+		}
 
 		return dictionary;
 	}
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
-		// Your code goes here
+		int min = word.length();
+		int minIndex = -1;
+		int i;
+		for (i = 0; i < dictionary.length; i++) {
+			if (levenshtein(dictionary[i], word) < min) {
+				minIndex = i;
+				min = levenshtein(dictionary[i], word);
+			}
+		}
+		if (min > threshold) {
+			return word;
+		}
+		return dictionary[minIndex];
 	}
 
+	
 }
